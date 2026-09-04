@@ -5,9 +5,9 @@ def generate_jobs(job_amount : int, burst_range : tuple[int, int]):
     random_list = []
     for x in range(job_amount):
         burst_value = random.randrange(burst_range[0], burst_range[1])
-        random_list.append(burst_value)
+        random_list.append((f"{x+1}", burst_value))
     return random_list
 
 
-print(generate_jobs(5, (0,20)))
+print(generate_jobs(5, (1,20)))
 
