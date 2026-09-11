@@ -21,7 +21,7 @@ def generate_jobs(job_amount : int, burst_range : tuple[int, int]):
 
 #Creates jobs file to be parsed into a list if true, job list ran successfully
 def createJobFile(file_name : str, job_list: list) -> bool:
-    with open("jobs.txt", "w") as file:
+    with open(file_name, "w") as file:
         for job_name, job_burst_time in job_list:
             file.write(f"Job {job_name}\n")
             file.write(f"{job_burst_time}\n")
@@ -70,14 +70,29 @@ def firstComeFirstServe(job_file : str, job_amount : int):
         averageTurnaround = totalTurnaround/jobSize
         print(f"Average turnaround time: {averageTurnaround}")
     
-        return completedList
+        return averageTurnaround
+
+#gets the avergae of average for part 3 of project
+#the number of trials to run the algorithm
+#function the name of the scheduler algorithm
+#*args arguments to the scheduler algorithm
+def getAverageOfAverage(trials, func , *args):
+    sum = 0
+    for x in range(0, trials):
+        createJobFile("generatedJobs.txt", generate_jobs(15, (1, 30))) #Reset generator
+        sum+= func(*args)
+    return sum/trials
+
+#createJobFile("Jobs.txt", generate_jobs(15, (1, 30)))#createJobFile() Note: This is the job, no trails for part 1c table
+createJobFile("part3jobs.txt", generate_jobs(15, (1, 30))) #for part 3
 
 
+#firstComeFirstServe("jobs.txt", 5)
+#firstComeFirstServe("jobs.txt", 10)
+#firstComeFirstServe("jobs.txt", 15)
 
-
-
-#createJobFile("jobs.txt", generate_jobs(15, (1, 30)))
-
-firstComeFirstServe("jobs.txt", 5)
-firstComeFirstServe("jobs.txt", 10)
-firstComeFirstServe("jobs.txt", 15)
+averageOfAverageList = []
+averageOfAverageList.append(getAverageOfAverage(5, firstComeFirstServe, "part3jobs.txt", 5))
+averageOfAverageList.append(getAverageOfAverage(10, firstComeFirstServe, "part3jobs.txt", 10))
+averageOfAverageList.append(getAverageOfAverage(15, firstComeFirstServe, "part3jobs.txt", 15))
+print(f"averages with trials: 5 10 15: {averageOfAverageList}")
