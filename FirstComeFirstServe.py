@@ -1,8 +1,5 @@
 import random
 import queue
-import pandas as pd 
-import numpy as np 
-from dataclasses import dataclass
 
 class process:
     def __init__(self):
@@ -14,7 +11,7 @@ class process:
         turnaround_time : int 
     
 
-
+#Generates list of jobs -> jobs.txt
 def generate_jobs(job_amount : int, burst_range : tuple[int, int]):
     random_list = []
     for x in range(job_amount):
@@ -22,7 +19,7 @@ def generate_jobs(job_amount : int, burst_range : tuple[int, int]):
         random_list.append((f"{x+1}", burst_value))
     return random_list
 
-
+#Creates jobs file to be parsed into a list if true, job list ran successfully
 def createJobFile(file_name : str, job_list: list) -> bool:
     with open("jobs.txt", "w") as file:
         for job_name, job_burst_time in job_list:
@@ -32,15 +29,20 @@ def createJobFile(file_name : str, job_list: list) -> bool:
         return True 
     return False 
 
-def firstComeFirstServe(job_file : str):
+#Runs first come first serve algorithm processing process by queue arrival time one by one 
+def firstComeFirstServe(job_file : str, job_amount : int):
         jobQueue = queue.Queue()
-        with open(job_file, "r") as file:    
-            for line in file:
-                new_process : process = process()
-                new_process.process_name = line.strip()
-                new_process.process_burst_time = int(file.readline().strip())
-                new_process.arrival_time = 0 #all arrival time is set to 0
-                jobQueue.put(new_process)
+        with open(job_file, "r") as file:
+            if int(len(file.readlines()))/2 < job_amount:
+                raise ValueError(f"job amount cant exceed the amount of jobss in: {job_file}")    
+            file.seek(0)
+            for index, line in enumerate(file,start=0):
+                if(index < job_amount):
+                    new_process : process = process()
+                    new_process.process_name = line.strip()
+                    new_process.process_burst_time = int(file.readline().strip())
+                    new_process.arrival_time = 0 #all arrival time is set to 0
+                    jobQueue.put(new_process)
             file.close()
 
         jobSize = jobQueue.qsize()
@@ -71,6 +73,6 @@ def firstComeFirstServe(job_file : str):
 
 
 
-createJobFile("jobs.txt", generate_jobs(10, (1, 30)))
+createJobFile("jobs.txt", generate_jobs(15, (1, 30)))
 
-firstComeFirstServe("jobs.txt")
+firstComeFirstServe("jobs.txt", 15)
