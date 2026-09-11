@@ -75,4 +75,4 @@ def firstComeFirstServe(job_file : str, job_amount : int):
 
 createJobFile("jobs.txt", generate_jobs(15, (1, 30)))
 
-firstComeFirstServe("jobs.txt", 15)
+firstComeFirstServe("jobs.txt", 3)

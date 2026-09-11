@@ -45,7 +45,7 @@ def createJobFile(file_name : str, job_list: list) -> bool:
     return False 
 
 #Runs first come first serve algorithm processing process by queue arrival time one by one 
-def firstComeFirstServe(job_file : str, job_amount : int):
+def shortestJobFirst(job_file : str, job_amount : int):
         jobHeap = []
         with open(job_file, "r") as file:
             if int(len(file.readlines()))/2 < job_amount:
@@ -88,6 +88,5 @@ def firstComeFirstServe(job_file : str, job_amount : int):
 
 
 
-createJobFile("jobs.txt", generate_jobs(15, (1, 30)))
 
-firstComeFirstServe("jobs.txt", 3)
+shortestJobFirst("jobs.txt", 3)
