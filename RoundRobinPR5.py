@@ -31,7 +31,11 @@ def createJobFile(file_name : str, job_list: list) -> bool:
         return True 
     return False 
 
-#Runs first come first serve algorithm processing process by queue arrival time one by one 
+#The Round Robin algorithm that takes in a job file, the amount of jobs you want to process, and time slice or known
+#as the quantum of the round robin algorithm that switches once time runs out or the quantum is less than the burst time
+#Takes in file: job_file -> the file that contains the jobs
+#Takes in job_amount -> integer: the amount of jobs you want to process
+#time_slice -> integer: the time each process gets per clock interrupt
 def RoundRobin(job_file : str, job_amount : int, time_slice):
         jobQueue = queue.Queue()
         with open(job_file, "r") as file:
@@ -86,8 +90,6 @@ def RoundRobin(job_file : str, job_amount : int, time_slice):
         return completedList
 
 
-
-
-
-
-RoundRobin("jobs.txt", 6, 3)
+RoundRobin("jobs.txt", 5, 5)
+RoundRobin("jobs.txt", 10, 5)
+RoundRobin("jobs.txt", 15, 5)

@@ -44,7 +44,10 @@ def createJobFile(file_name : str, job_list: list) -> bool:
         return True 
     return False 
 
-#Runs first come first serve algorithm processing process by queue arrival time one by one 
+#Runs the shortest job first algorithm by processing nonpreemitiely the process with the shortest burst time by using a heap 
+#to organize the processes
+#job_amount -> the amount of jobs you want to process in the file
+#job_file ->the name of the file
 def shortestJobFirst(job_file : str, job_amount : int):
         jobHeap = []
         with open(job_file, "r") as file:
@@ -89,4 +92,6 @@ def shortestJobFirst(job_file : str, job_amount : int):
 
 
 
-shortestJobFirst("jobs.txt", 3)
+shortestJobFirst("jobs.txt", 5)
+shortestJobFirst("jobs.txt", 10)
+shortestJobFirst("jobs.txt", 15)

@@ -30,8 +30,11 @@ def createJobFile(file_name : str, job_list: list) -> bool:
     return False 
 
 #Runs first come first serve algorithm processing process by queue arrival time one by one 
+#Takes in file: job_file -> the file that contains the jobs
+#Takes in job_amount -> integer: the amount of jobs you want to process
 def firstComeFirstServe(job_file : str, job_amount : int):
         jobQueue = queue.Queue()
+        #Opens file and parse jobs from list
         with open(job_file, "r") as file:
             if int(len(file.readlines()))/2 < job_amount:
                 raise ValueError(f"job amount cant exceed the amount of jobss in: {job_file}")    
@@ -73,6 +76,8 @@ def firstComeFirstServe(job_file : str, job_amount : int):
 
 
 
-createJobFile("jobs.txt", generate_jobs(15, (1, 30)))
+#createJobFile("jobs.txt", generate_jobs(15, (1, 30)))
 
-firstComeFirstServe("jobs.txt", 3)
+firstComeFirstServe("jobs.txt", 5)
+firstComeFirstServe("jobs.txt", 10)
+firstComeFirstServe("jobs.txt", 15)
