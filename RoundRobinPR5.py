@@ -17,7 +17,7 @@ class process:
 def generate_jobs(job_amount : int, burst_range : tuple[int, int]):
     random_list = []
     for x in range(job_amount):
-        burst_value = random.randrange(burst_range[0], burst_range[1])
+        burst_value = random.randint(burst_range[0], burst_range[1])
         random_list.append((f"{x+1}", burst_value))
     return random_list
 
@@ -38,21 +38,24 @@ def createJobFile(file_name : str, job_list: list) -> bool:
 #time_slice -> integer: the time each process gets per clock interrupt
 def RoundRobin(job_file : str, job_amount : int, time_slice):
         jobQueue = queue.Queue()
-        with open(job_file, "r") as file:
-            if int(len(file.readlines()))/2 < job_amount:
-                raise ValueError(f"job amount cant exceed the amount of jobss in: {job_file}")    
-            file.seek(0)
-            for index, line in enumerate(file,start=0):
-                if(index < job_amount):
-                    new_process : process = process()
-                    new_process.process_name = line.strip()
-                    new_process.process_burst_time = int(file.readline().strip())
-                    new_process.process_burst_progress = new_process.process_burst_time
-                    new_process.arrival_time = 0 #all arrival time is set to 0
-                    new_process.completion_time = new_process.arrival_time #all arrival time is set to 0
-                    new_process.processed = False #all arrival time is set to 0
-                    jobQueue.put(new_process)
-            file.close()
+        lines = []
+        try:
+            with open(job_file, "r") as file:
+                lines = [l.strip() for l in file if l.strip()]
+                file.close()
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Job file not found {job_file}")
+        for i in range(job_amount):
+            new_process : process = process()
+            new_process.process_name = lines[2 * i]
+            new_process.process_burst_time = int(lines[2*i+1])
+            if new_process.process_burst_time < 0:
+                            raise ValueError("No negative burst values")
+            new_process.process_burst_progress = new_process.process_burst_time
+            new_process.arrival_time = 0 #all arrival time is set to 0
+            new_process.completion_time = new_process.arrival_time #all arrival time is set to 0
+            new_process.processed = False #all arrival time is set to 0
+            jobQueue.put(new_process)
 
         jobSize = jobQueue.qsize()
         currentTime : int = 0
@@ -90,11 +93,12 @@ def RoundRobin(job_file : str, job_amount : int, time_slice):
         return averageTurnaround
 
 
-RoundRobin("jobs.txt", 5, 5)
-RoundRobin("jobs.txt", 10, 5)
-RoundRobin("jobs.txt", 15, 5)
+#RoundRobin("jobs.txt", 5, 2)
+#RoundRobin("jobs.txt", 10, 2)
+#RoundRobin("jobs.txt", 15, 2)
 
-#gets the avergae of average for part 3 of project
+
+#gets the avergae of average for part 3 of project by regenerating jobs, getting its turnaround time and adding it up
 #the number of trials to run the algorithm
 #function the name of the scheduler algorithm
 #*args arguments to the scheduler algorithm
@@ -109,8 +113,17 @@ def getAverageOfAverage(trials, func , *args):
 createJobFile("part3jobs.txt", generate_jobs(15, (1, 30))) #for part 3
 
 
+#for part 1, 2
+#using jobs 5, 2, 7, 4, 3, 8, 3, 6, 9, 29, 3, 3, 15, 5, 12
+turnaroundtimes = []
+turnaroundtimes.append(RoundRobin("jobs.txt", 5, 5))
+turnaroundtimes.append(RoundRobin("jobs.txt", 10, 5))
+turnaroundtimes.append(RoundRobin("jobs.txt", 15, 5))
+
+#for part 3
 averageOfAverageList = []
-averageOfAverageList.append(getAverageOfAverage(5, RoundRobin, "part3jobs.txt", 5, 5))
-averageOfAverageList.append(getAverageOfAverage(10, RoundRobin, "part3jobs.txt", 10, 5))
-averageOfAverageList.append(getAverageOfAverage(15, RoundRobin, "part3jobs.txt", 15, 5))
-print(f"averages with trials: 5 10 15: {averageOfAverageList}")
+averageOfAverageList.append(getAverageOfAverage(20, RoundRobin, "generatedJobs.txt", 5, 5))
+averageOfAverageList.append(getAverageOfAverage(20, RoundRobin, "generatedJobs.txt", 10, 5))
+averageOfAverageList.append(getAverageOfAverage(20, RoundRobin, "generatedJobs.txt", 15, 5))
+print(f"RR-5 Turnaround times for 5 10 15 jobs in jobs.txt: {turnaroundtimes}")
+print(f"RR-5 averages with 20 trials of 5 10 15 jobs in generatedJobs : {averageOfAverageList}")

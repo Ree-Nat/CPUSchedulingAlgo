@@ -1,30 +1,30 @@
 Job 1
 12
 Job 2
-27
-Job 3
-4
-Job 4
-5
-Job 5
-5
-Job 6
-15
-Job 7
-6
-Job 8
-13
-Job 9
-10
-Job 10
-22
-Job 11
-28
-Job 12
-16
-Job 13
-24
-Job 14
 11
-Job 15
+Job 3
+2
+Job 4
 7
+Job 5
+12
+Job 6
+25
+Job 7
+30
+Job 8
+27
+Job 9
+18
+Job 10
+17
+Job 11
+14
+Job 12
+9
+Job 13
+19
+Job 14
+1
+Job 15
+22

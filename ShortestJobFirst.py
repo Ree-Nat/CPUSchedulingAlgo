@@ -30,18 +30,21 @@ class process:
 def generate_jobs(job_amount : int, burst_range : tuple[int, int]):
     random_list = []
     for x in range(job_amount):
-        burst_value = random.randrange(burst_range[0], burst_range[1])
+        burst_value = random.randint(burst_range[0], burst_range[1])
         random_list.append((f"{x+1}", burst_value))
     return random_list
 
 #Creates jobs file to be parsed into a list if true, job list ran successfully
 def createJobFile(file_name : str, job_list: list) -> bool:
-    with open(file_name, "w") as file:
-        for job_name, job_burst_time in job_list:
-            file.write(f"Job {job_name}\n")
-            file.write(f"{job_burst_time}\n")
-        file.close()
-        return True 
+    try:
+        with open(file_name, "w") as file:
+            for job_name, job_burst_time in job_list:
+                file.write(f"Job {job_name}\n")
+                file.write(f"{job_burst_time}\n")
+            file.close()
+            return True 
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Job file not found {file_name}")
     return False 
 
 #Runs the shortest job first algorithm by processing nonpreemitiely the process with the shortest burst time by using a heap 
@@ -50,18 +53,26 @@ def createJobFile(file_name : str, job_list: list) -> bool:
 #job_file ->the name of the file
 def shortestJobFirst(job_file : str, job_amount : int):
         jobHeap = []
-        with open(job_file, "r") as file:
-            if int(len(file.readlines()))/2 < job_amount:
-                raise ValueError(f"job amount cant exceed the amount of jobss in: {job_file}")    
-            file.seek(0)
-            for index, line in enumerate(file,start=0):
-                if(index < job_amount):
-                    new_process : process = process()
-                    new_process.process_name = line.strip()
-                    new_process.process_burst_time = int(file.readline().strip())
-                    new_process.arrival_time = 0 #all arrival time is set to 0
-                    heapq.heappush(jobHeap, new_process)
-            file.close()
+        lines = []
+
+        try:
+            with open(job_file, "r") as file:
+                lines = [l.strip() for l in file if l.strip()]
+                file.close()
+        except FileNotFoundError:
+            raise FileNotFoundError(f"File not found{job_file}")
+
+        if int(len(lines)) //2 < job_amount:
+            raise ValueError(f"job amount cant exceed the amount of jobs in: {job_file}")    
+        for i in range(job_amount):
+            new_process : process = process()
+            new_process.process_name = lines[2*i]
+            new_process.process_burst_time = int(lines[2*i + 1])
+            if new_process.process_burst_time < 0:
+                            raise ValueError("No negative burst values")
+            new_process.arrival_time = 0 #all arrival time is set to 0
+            heapq.heappush(jobHeap, new_process)
+        file.close()
 
         jobSize = len(jobHeap)
         currentTime : int = 0
@@ -92,14 +103,14 @@ def shortestJobFirst(job_file : str, job_amount : int):
 #shortestJobFirst("jobs.txt", 15)
 
 
-#gets the avergae of average for part 3 of project
+#gets the avergae of average for part 3 of project by regenerating jobs, getting its turnaround time and adding it up
 #the number of trials to run the algorithm
 #function the name of the scheduler algorithm
 #*args arguments to the scheduler algorithm
 def getAverageOfAverage(trials, func , *args):
     sum = 0
     for x in range(0, trials):
-        createJobFile("part3jobs.txt", generate_jobs(15, (1, 30))) #Reset generator
+        createJobFile("generatedJobs.txt", generate_jobs(15, (1, 30))) #Reset generator
         sum+= func(*args)
     return sum/trials
 
@@ -107,8 +118,20 @@ def getAverageOfAverage(trials, func , *args):
 createJobFile("part3jobs.txt", generate_jobs(15, (1, 30))) #for part 3
 
 
+#createJobFile("Jobs.txt", generate_jobs(15, (1, 30)))#createJobFile() Note: This is the job, no trails for part 1c table
+createJobFile("part3jobs.txt", generate_jobs(15, (1, 30))) #for part 3
+
+#for part 1, 2
+#using jobs 5, 2, 7, 4, 3, 8, 3, 6, 9, 29, 3, 3, 15, 5, 12
+turnaroundtimes = []
+turnaroundtimes.append(shortestJobFirst("jobs.txt", 5))
+turnaroundtimes.append(shortestJobFirst("jobs.txt", 10))
+turnaroundtimes.append(shortestJobFirst("jobs.txt", 15))
+
+#for part 3
 averageOfAverageList = []
-averageOfAverageList.append(getAverageOfAverage(5, shortestJobFirst, "part3jobs.txt", 5))
-averageOfAverageList.append(getAverageOfAverage(10, shortestJobFirst, "part3jobs.txt", 10))
-averageOfAverageList.append(getAverageOfAverage(15, shortestJobFirst, "part3jobs.txt", 15))
-print(f"averages with trials: 5 10 15: {averageOfAverageList}")
+averageOfAverageList.append(getAverageOfAverage(20, shortestJobFirst, "generatedJobs.txt", 5))
+averageOfAverageList.append(getAverageOfAverage(20, shortestJobFirst, "generatedJobs.txt", 10))
+averageOfAverageList.append(getAverageOfAverage(20, shortestJobFirst, "generatedJobs.txt", 15))
+print(f"SJF Turnaround times for 5 10 15 jobs in jobs.txt: {turnaroundtimes}")
+print(f"SJF averages with 20 trials of 5 10 15 jobs in generatedJobs : {averageOfAverageList}")
