@@ -277,7 +277,7 @@ print(f"SJF Turnaround times for 5 10 15 jobs in jobs.txt: {turnaroundtimesSJF}"
 print(f"SJF averages with 20 trials of 5 10 15 jobs in generatedJobs : {averageOfAverageListSJF}")
 
 print(f"RR2 Turnaround times for 5 10 15 jobs in jobs.txt: {turnAroundTimeRR2}")
-print(f"RR2 averages with 20 trials of 5 10 15 jobs in generatedJobs : {averageOfAverageListRR5}")
+print(f"RR2 averages with 20 trials of 5 10 15 jobs in generatedJobs : {averageOfAverageListRR2}")
 
 print(f"RR5 Turnaround times for 5 10 15 jobs in jobs.txt: {turnaroundTimeRR5}")
 print(f"RR5 averages with 20 trials of 5 10 15 jobs in generatedJobs : {averageOfAverageListRR5}")
@@ -307,7 +307,7 @@ df_rr5 = pd.DataFrame({
     "Average Turnaround Time": averageOfAverageListRR5
 })
 ax = df_rr5.plot(x="Job Count", y="Average Turnaround Time", marker = "o", label="RR-5")
-ax.set_title("SJF Average of Average Turnaround Time over Time ")
+ax.set_title("RR5 Average of Average Turnaround Time over Time ")
 ax.set_ylabel("Average Turnaround Time")
 
 
@@ -316,7 +316,7 @@ df_rr2 = pd.DataFrame({
     "Average Turnaround Time": averageOfAverageListRR2
 })
 ax = df_rr2.plot(x="Job Count", y="Average Turnaround Time", marker = "o", label="RR-2")
-ax.set_title("SJF Average of Average Turnaround Time over Time ")
+ax.set_title("RR2 Average of Average Turnaround Time over Time ")
 ax.set_ylabel("Average Turnaround Time")
 
 plt.show()
@@ -326,7 +326,7 @@ df_sjf.plot(x="Job Count", y="Average Turnaround Time", marker="o", label="SJF",
 df_rr5.plot(x="Job Count", y="Average Turnaround Time", marker="o", label="RR-5", ax=ax)
 df_rr2.plot(x="Job Count", y="Average Turnaround Time", marker="o", label="RR-2", ax=ax)
 
-ax.set_title("Average Turnaround Time: FCFS vs SJF vs Round Robin")
-ax.set_ylabel("Average Turnaround Time")
+ax.set_title("Average of Average Turnaround Time: FCFS vs SJF vs Round Robin")
+ax.set_ylabel("Average of Average Turnaround Time")
 ax.legend()
 plt.show()
