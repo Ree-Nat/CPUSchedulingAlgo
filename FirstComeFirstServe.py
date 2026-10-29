@@ -1,7 +1,6 @@
 import random
 import queue
-import pandas as pd
-import matplotlib.pyplot as plt
+
 
 class process:
     def __init__(self):
@@ -80,7 +79,8 @@ def firstComeFirstServe(job_file : str, job_amount : int):
     
         return averageTurnaround
 
-#gets the avergae of average for part 3 of project by regenerating jobs, getting its turnaround time and adding it up
+#gets the avergae of average for part 3 of project by using the generatedJobs,txt, getting its turnaround time and a
+# adding it up based off the numer of trials
 #the number of trials to run the algorithm
 #function the name of the scheduler algorithm
 #*args arguments to the scheduler algorithm
@@ -108,15 +108,3 @@ averageOfAverageList.append(getAverageOfAverage(20, firstComeFirstServe, "genera
 print(f"FCFS Turnaround times for 5 10 15 jobs in jobs.txt: {turnaroundtimes}")
 print(f"FCFS averages with 20 trials of 5 10 15 jobs in generatedJobs : {averageOfAverageList}")
 
-job_counts = [5,10,15]
-
-df = pd.DataFrame({
-    "Job Count": job_counts,
-    "Average Turnaround Time": turnaroundtimes
-})
-ax = df.plot(x="Job Count", y="Average Turnaround Time", marker = "o")
-ax.set_title("FCFS Average Turnaround Time over Time ")
-ax.set_ylabel("Average Turnaround Time")
-plt.show()
-
-print(df)

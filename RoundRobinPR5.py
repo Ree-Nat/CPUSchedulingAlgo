@@ -98,7 +98,8 @@ def RoundRobin(job_file : str, job_amount : int, time_slice):
 #RoundRobin("jobs.txt", 15, 2)
 
 
-#gets the avergae of average for part 3 of project by regenerating jobs, getting its turnaround time and adding it up
+#gets the avergae of average for part 3 of project by using the generatedJobs,txt, getting its turnaround time and a
+# adding it up based off the numer of trials
 #the number of trials to run the algorithm
 #function the name of the scheduler algorithm
 #*args arguments to the scheduler algorithm
