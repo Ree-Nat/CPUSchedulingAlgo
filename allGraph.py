@@ -217,12 +217,13 @@ def RoundRobin(job_file : str, job_amount : int, time_slice):
 def getAverageOfAverage(trials, func , *args):
     sum = 0
     for x in range(0, trials):
-        createJobFile("generatedJobs.txt", generate_jobs(15, (1, 30))) #Reset generator
+        #createJobFile("generatedJobs.txt", generate_jobs(15, (1, 30))) #Reset generator
         sum+= func(*args)
     return sum/trials
 
-#createJobFile("Jobs.txt", generate_jobs(15, (1, 30)))#createJobFile() Note: This is the job, no trails for part 1c table
-createJobFile("part3jobs.txt", generate_jobs(15, (1, 30))) #for part 3
+#createJobFile("jobs.txt", generate_jobs(15, (1, 30)))#createJobFile() Note: This is the job, no trails for part 1c table
+#createJobFile("generatedJobs.txt", generate_jobs(15, (1, 30))) #for part 3
+
 
 job_counts = [5,10,15]
 

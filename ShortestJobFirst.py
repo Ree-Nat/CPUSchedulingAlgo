@@ -110,16 +110,11 @@ def shortestJobFirst(job_file : str, job_amount : int):
 def getAverageOfAverage(trials, func , *args):
     sum = 0
     for x in range(0, trials):
-        createJobFile("generatedJobs.txt", generate_jobs(15, (1, 30))) #Reset generator
         sum+= func(*args)
     return sum/trials
 
-#createJobFile("Jobs.txt", generate_jobs(15, (1, 30)))#createJobFile() Note: This is the job, no trails for part 1c table
-createJobFile("part3jobs.txt", generate_jobs(15, (1, 30))) #for part 3
-
-
-#createJobFile("Jobs.txt", generate_jobs(15, (1, 30)))#createJobFile() Note: This is the job, no trails for part 1c table
-createJobFile("part3jobs.txt", generate_jobs(15, (1, 30))) #for part 3
+#createJobFile("jobs.txt", generate_jobs(15, (1, 30)))#createJobFile() Note: This is the job, no trails for part 1c table
+#createJobFile("generatedJobs.txt", generate_jobs(15, (1, 30))) #for part 3
 
 #for part 1, 2
 #using jobs 5, 2, 7, 4, 3, 8, 3, 6, 9, 29, 3, 3, 15, 5, 12
